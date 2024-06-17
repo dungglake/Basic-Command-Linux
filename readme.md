@@ -97,10 +97,28 @@ free -h
 ps aux | grep [process_name]
 ```
 
-### Kill một tiến trình
-```bash
-kill [PID]
-```
+### Kill Process
+Các cách cơ bản để kill một process trong Linux gồm:
+
+1. **Kill bằng PID (Process ID)**:
+   ```sh
+   kill <PID>
+   ```
+
+2. **Kill với tín hiệu cụ thể**:
+   ```sh
+   kill -9 <PID>
+   ```
+
+3. **Kill bằng tên process**:
+   ```sh
+   pkill <tên_process>
+   ```
+
+4. **Kill tất cả các process của một user cụ thể**:
+   ```sh
+   killall <tên_user>
+   ```
 
 ## Liệt kê danh sách file/thư mục
 ```bash
@@ -234,11 +252,6 @@ tail -n 2 file_name
 sed -i 's/old_string/new_string/g' file_name
 ```
 
-### Traceroute
-```bash
-traceroute 103.200.22.11
-```
-
 ### Netstat
 ```bash
 netstat -tuln
@@ -276,3 +289,54 @@ command > all_output_file 2>&1
 ```
 ```
 
+### Symlink và Hardlink
+Symlink (Symbolic Link):
+- Là một file đặc biệt chứa đường dẫn tới file gốc.
+- Khi symlink bị xóa, file gốc không bị ảnh hưởng.
+- Sử dụng khi muốn tạo shortcut tới file hoặc thư mục ở một vị trí khác.
+  
+Hardlink:
+- Là một liên kết trực tiếp đến dữ liệu của file gốc trên ổ đĩa.
+- Khi hardlink bị xóa, file gốc và các hardlink khác vẫn tồn tại.
+- Sử dụng khi muốn có nhiều tên file trỏ đến cùng một dữ liệu để tiết kiệm không gian.
+
+Khi nào sử dụng:
+- Symlink: Khi cần shortcut hoặc cần liên kết tới file/thư mục trên phân vùng khác.
+- Hardlink: Khi cần tiết kiệm không gian hoặc tạo nhiều đường dẫn đến cùng dữ liệu trong cùng một phân vùng.
+
+### SCP và Rsync
+SCP (Secure Copy):
+- Dùng để sao chép file giữa hai hệ thống qua SSH.
+- Không có khả năng đồng bộ hóa dữ liệu.
+- Cú pháp đơn giản hơn:
+  ```sh
+  scp source_file user@remote_host:/path/to/destination
+  ```
+
+Rsync:
+- Dùng để sao chép và đồng bộ hóa file/directory.
+- Chỉ sao chép những phần thay đổi, tiết kiệm băng thông.
+- Có thể làm việc qua SSH:
+  ```sh
+  rsync -avz source_file user@remote_host:/path/to/destination
+  ```
+
+### Traceroute
+Để trace route từ máy remote đến IP 103.200.22.11 và nêu ra các hop, dùng lệnh sau:
+
+```sh
+traceroute 103.200.22.11
+```
+dung@dung-Inspiron-15-3530:~/Desktop$ traceroute 103.200.22.11
+traceroute to 103.200.22.11 (103.200.22.11), 30 hops max, 60 byte packets
+ 1  192.168.0.1 (192.168.0.1)  11.470 ms  11.968 ms  12.952 ms
+ 2  localhost (27.71.251.149)  24.651 ms  24.642 ms  24.633 ms
+ 3  10.255.39.241 (10.255.39.241)  24.625 ms 10.255.39.243 (10.255.39.243)  24.612 ms 10.255.39.247 (10.255.39.247)  24.603 ms
+ 4  * * *
+ 5  localhost (27.68.236.34)  24.611 ms localhost (27.68.236.242)  24.600 ms  24.542 ms
+ 6  203.113.187.98 (203.113.187.98)  24.531 ms  13.279 ms  18.542 ms
+ 7  static.vnpt.vn (113.171.45.66)  19.161 ms *  22.269 ms
+ 8  static.vnpt.vn (113.171.46.226)  21.584 ms  23.344 ms  20.691 ms
+ 9  172.16.34.38 (172.16.34.38)  21.034 ms static.vnpt.vn (113.171.49.86)  20.249 ms 172.16.34.46 (172.16.34.46)  23.780 ms
+10  172.16.34.38 (172.16.34.38)  26.607 ms  27.008 ms 172.16.34.46 (172.16.34.46)  24.114 ms
+11  103.200.22.11 (103.200.22.11)  22.432 ms  22.434 ms  24.600 ms
